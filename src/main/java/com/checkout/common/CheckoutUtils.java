@@ -46,8 +46,9 @@ public class CheckoutUtils {
     public static void validateMultipleRequires(final Map<String, Object> params) {
         if (params != null) {
             params.forEach((property, object) -> {
-                if (object instanceof String)
+                if (object instanceof String) {
                     requiresNonBlank(property, (String) object);
+                }
                 requiresNonNull(property, object);
             });
         }
