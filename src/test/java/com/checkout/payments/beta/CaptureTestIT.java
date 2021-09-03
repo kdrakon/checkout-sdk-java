@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CaptureTestIT extends AbstractPaymentsTestIT {
+class CaptureTestIT extends AbstractPaymentsTestIT {
 
     @Test
-    public void shouldCaptureCardPayment() {
+    void shouldCaptureCardPayment() {
 
         final PaymentResponse<ResponseCardSource> paymentResponse = makeCardPayment(false);
 
@@ -40,7 +40,7 @@ public class CaptureTestIT extends AbstractPaymentsTestIT {
     }
 
     @Test
-    public void shouldCaptureTokenPayment() {
+    void shouldCaptureTokenPayment() {
 
         final PaymentResponse<ResponseCardSource> paymentResponse = makeTokenPayment();
 
@@ -63,7 +63,7 @@ public class CaptureTestIT extends AbstractPaymentsTestIT {
     }
 
     @Test
-    public void shouldCapturePaymentPartially() {
+    void shouldCapturePaymentPartially() {
 
         final PaymentResponse<ResponseCardSource> paymentResponse = makeCardPayment(false);
 

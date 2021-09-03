@@ -39,7 +39,7 @@ public class CardSourceHelper {
                 .build();
     }
 
-    public static RequestCorporateSender getCorporateSender() {
+    static RequestCorporateSender getCorporateSender() {
         return RequestCorporateSender.builder()
                 .companyName("Checkout")
                 .address(Address.builder()
@@ -61,7 +61,7 @@ public class CardSourceHelper {
                 .build();
     }
 
-    public static PaymentRequest getCardSourcePayment(final RequestCardSource cardSource, final RequestSender sender, final boolean three3ds) {
+    static PaymentRequest getCardSourcePayment(final RequestCardSource cardSource, final RequestSender sender, final boolean three3ds) {
         final ThreeDSRequest threeDSRequest = ThreeDSRequest.builder().enabled(three3ds).build();
         return Payments.card(cardSource).fromSender(sender)
                 .capture(false)
