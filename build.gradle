@@ -35,6 +35,9 @@ dependencies {
     testImplementation 'org.apache.logging.log4j:log4j-api:2.13.3'
     testImplementation 'org.apache.logging.log4j:log4j-core:2.13.3'
     testImplementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
+    testImplementation 'org.mock-server:mockserver-junit-jupiter:5.11.2'
+    testImplementation 'org.mock-server:mockserver-netty:5.11.2'
+
 
 }
 

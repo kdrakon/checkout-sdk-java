@@ -6,7 +6,7 @@ import static com.checkout.common.CheckoutUtils.validateParams;
 
 public enum Environment {
 
-    SANDBOX("https://api.sandbox.checkout.com/"),
+    SANDBOX("http://localhost:1080"),
     PRODUCTION("https://api.checkout.com/");
 
     private final String uri;
