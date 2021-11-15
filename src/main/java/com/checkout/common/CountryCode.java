@@ -1,7 +1,6 @@
 package com.checkout.common;
 
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.EnumUtils;
 
 public enum CountryCode {
 
@@ -512,14 +511,6 @@ public enum CountryCode {
 
     CountryCode(final String dialCode) {
         this.dialCode = dialCode;
-    }
-
-    public static CountryCode fromString(final String countryCode) {
-        if (EnumUtils.isValidEnum(CountryCode.class, countryCode)) {
-            return CountryCode.valueOf(countryCode.toUpperCase());
-        } else {
-            return null;
-        }
     }
 
 }

@@ -1,9 +1,9 @@
 package com.checkout.apm.sepa;
 
 import com.checkout.ApiClient;
+import com.checkout.CheckoutConfiguration;
 import com.checkout.SdkAuthorization;
 import com.checkout.SdkAuthorizationType;
-import com.checkout.CheckoutConfiguration;
 import com.checkout.SdkCredentials;
 import com.checkout.common.Resource;
 import org.junit.jupiter.api.BeforeEach;

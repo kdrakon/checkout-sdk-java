@@ -11,17 +11,17 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public final class RequestIdSource extends RequestSource {
+public final class RequestIdSource extends AbstractRequestSource {
 
     private String id;
 
-    private Integer ccv;
+    private String cvv;
 
     @Builder
-    private RequestIdSource(final String id, final Integer ccv) {
+    private RequestIdSource(final String id, final String cvv) {
         super(PaymentSourceType.ID);
         this.id = id;
-        this.ccv = ccv;
+        this.cvv = cvv;
     }
 
     public RequestIdSource() {

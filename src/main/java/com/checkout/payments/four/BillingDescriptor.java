@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public final class BillingDescriptor {
 
+    private String name;
+
+    private String city;
+
     private String reference;
 
 }

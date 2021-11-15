@@ -11,8 +11,12 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CaptureRequest {
+public final class CaptureRequest {
+
     private Long amount;
+
     private String reference;
+
     private Map<String, Object> metadata;
+
 }

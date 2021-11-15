@@ -8,9 +8,9 @@ The full list of request body parameters and possible outcomes can be found [her
 ## Request a SEPA payment
 
 ```java
-SepaSource source = new SepaSource(sourceId);
+RequestSepaSource source = new RequestSepaSource(sourceId);
 
-PaymentRequest<RapiPagoSource> request = PaymentRequest.sepa(source, Currency.ARS, 1000L, "referece");
+PaymentRequest request = PaymentRequest.sepa(source, Currency.ARS, 10L, "referece");
 
 PaymentResponse response = api.paymentsClient().requestAsync(request).get();
 

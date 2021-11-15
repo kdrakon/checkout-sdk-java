@@ -12,7 +12,11 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RefundRequest {
+
     private Long amount;
+
     private String reference;
+
     private Map<String, Object> metadata;
+
 }

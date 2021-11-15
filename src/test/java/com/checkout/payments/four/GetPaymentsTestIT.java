@@ -4,19 +4,17 @@ import com.checkout.common.Address;
 import com.checkout.common.CountryCode;
 import com.checkout.common.Currency;
 import com.checkout.common.Phone;
-import com.checkout.payments.four.action.PaymentAction;
-import com.checkout.payments.four.action.PaymentActionType;
-import com.checkout.payments.four.capture.CaptureRequest;
-import com.checkout.payments.four.capture.CaptureResponse;
-import com.checkout.payments.four.request.PaymentRecipient;
+import com.checkout.payments.ActionType;
+import com.checkout.payments.AuthorizationType;
+import com.checkout.payments.PaymentRecipient;
+import com.checkout.payments.PaymentStatus;
+import com.checkout.payments.ShippingDetails;
 import com.checkout.payments.four.request.PaymentRequest;
 import com.checkout.payments.four.request.Payments;
-import com.checkout.payments.four.request.ShippingDetails;
 import com.checkout.payments.four.request.source.RequestCardSource;
+import com.checkout.payments.four.response.GetPaymentResponse;
 import com.checkout.payments.four.response.PaymentResponse;
-import com.checkout.payments.four.response.PaymentStatus;
-import com.checkout.payments.four.response.source.ResponseCardSource;
-import com.checkout.payments.four.sender.RequestIndividualSender;
+import com.checkout.payments.four.sender.PaymentIndividualSender;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -48,9 +46,9 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
     @Test
     void shouldGetCardPayment() {
 
-        final PaymentResponse<ResponseCardSource> payment = makeCardPayment(false);
+        final PaymentResponse payment = makeCardPayment(false);
 
-        final PaymentResponse<ResponseCardSource> paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
+        final GetPaymentResponse paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
 
         assertNotNull(paymentReturned);
         assertEquals(PaymentStatus.AUTHORIZED, paymentReturned.getStatus());
@@ -61,14 +59,14 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
     void shouldGetCardPaymentWithMetadata() {
 
         final RequestCardSource source = getRequestCardSource();
-        final RequestIndividualSender sender = getIndividualSender();
+        final PaymentIndividualSender sender = getIndividualSender();
 
         final PaymentRequest request = getCardSourcePayment(source, sender, false);
         request.getMetadata().put("test", "1234");
 
-        final PaymentResponse<ResponseCardSource> payment = blocking(paymentsClient.requestPayment(request));
+        final PaymentResponse payment = blocking(paymentsClient.requestPayment(request));
 
-        final PaymentResponse<ResponseCardSource> paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
+        final GetPaymentResponse paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
 
         assertNotNull(paymentReturned);
         assertEquals(PaymentStatus.AUTHORIZED, paymentReturned.getStatus());
@@ -80,7 +78,7 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
     void shouldGetCardPaymentWithIpAndDescription() {
 
         final RequestCardSource source = getRequestCardSource();
-        final RequestIndividualSender sender = getIndividualSender();
+        final PaymentIndividualSender sender = getIndividualSender();
 
         final PaymentRequest request = Payments.card(source).individualSender(sender)
                 .capture(false)
@@ -91,9 +89,9 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
                 .description("description")
                 .build();
 
-        final PaymentResponse<ResponseCardSource> payment = blocking(paymentsClient.requestPayment(request));
+        final PaymentResponse payment = blocking(paymentsClient.requestPayment(request));
 
-        final PaymentResponse<ResponseCardSource> paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
+        final GetPaymentResponse paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
 
         assertNotNull(paymentReturned);
         assertEquals(PaymentStatus.CARD_VERIFIED, paymentReturned.getStatus());
@@ -106,7 +104,7 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
     void shouldGetCardPaymentWithRecipient() {
 
         final RequestCardSource source = getRequestCardSource();
-        final RequestIndividualSender sender = getIndividualSender();
+        final PaymentIndividualSender sender = getIndividualSender();
 
         final PaymentRecipient recipient = PaymentRecipient.builder()
                 .accountNumber("1234567")
@@ -125,9 +123,9 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
                 .recipient(recipient)
                 .build();
 
-        final PaymentResponse<ResponseCardSource> payment = blocking(paymentsClient.requestPayment(request));
+        final PaymentResponse payment = blocking(paymentsClient.requestPayment(request));
 
-        final PaymentResponse<ResponseCardSource> paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
+        final GetPaymentResponse paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
 
         assertNotNull(paymentReturned);
         assertNotNull(paymentReturned.getRecipient());
@@ -143,7 +141,7 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
     void shouldGetCardPaymentWithShipping() {
 
         final RequestCardSource source = getRequestCardSource();
-        final RequestIndividualSender sender = getIndividualSender();
+        final PaymentIndividualSender sender = getIndividualSender();
 
         final Address address = Address.builder()
                 .addressLine1("Address Line 1")
@@ -167,9 +165,9 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
                 .shipping(recipient)
                 .build();
 
-        final PaymentResponse<ResponseCardSource> payment = blocking(paymentsClient.requestPayment(request));
+        final PaymentResponse payment = blocking(paymentsClient.requestPayment(request));
 
-        final PaymentResponse<ResponseCardSource> paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
+        final GetPaymentResponse paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
 
         assertNotNull(paymentReturned);
         assertNotNull(paymentReturned.getShipping());
@@ -184,9 +182,9 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
     @Test
     void shouldGetCardPayment_3ds() {
 
-        final PaymentResponse<ResponseCardSource> payment = makeCardPayment(true);
+        final PaymentResponse payment = makeCardPayment(true);
 
-        final PaymentResponse<ResponseCardSource> paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
+        final GetPaymentResponse paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
 
         assertNotNull(paymentReturned);
         assertEquals(PaymentStatus.PENDING, paymentReturned.getStatus());
@@ -196,9 +194,9 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
     @Test
     void shouldGetCardTokenPayment() {
 
-        final PaymentResponse<ResponseCardSource> payment = makeTokenPayment();
+        final PaymentResponse payment = makeTokenPayment();
 
-        final PaymentResponse<ResponseCardSource> paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
+        final GetPaymentResponse paymentReturned = blocking(paymentsClient.getPayment(payment.getId()));
 
         assertNotNull(paymentReturned);
         assertEquals(PaymentStatus.AUTHORIZED, paymentReturned.getStatus());
@@ -208,7 +206,7 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
     @Test
     void shouldGetCardPaymentAction() {
 
-        final PaymentResponse<ResponseCardSource> payment = makeCardPayment(false);
+        final PaymentResponse payment = makeCardPayment(false);
 
         final List<PaymentAction> paymentActions = blocking(paymentsClient.getPaymentActions(payment.getId()));
 
@@ -217,10 +215,10 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
 
         final PaymentAction paymentAction = paymentActions.get(0);
         assertNotNull(paymentAction.getId());
-        assertEquals(PaymentActionType.AUTHORIZATION, paymentAction.getType());
+        assertEquals(ActionType.AUTHORIZATION, paymentAction.getType());
         assertNotNull(paymentAction.getProcessedOn());
         assertEquals(Long.valueOf(10), paymentAction.getAmount());
-        assertTrue(paymentAction.isApproved());
+        assertTrue(paymentAction.getApproved());
         assertNotNull(paymentAction.getAuthCode());
         assertNotNull(paymentAction.getResponseCode());
         assertEquals("Approved", paymentAction.getResponseSummary());
@@ -238,7 +236,7 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
         // payment
 
         final RequestCardSource source = getRequestCardSource();
-        final RequestIndividualSender sender = getIndividualSender();
+        final PaymentIndividualSender sender = getIndividualSender();
 
         final PaymentRequest request = getCardSourcePayment(source, sender, false);
         request.getMetadata().put("test", "1234");
@@ -247,7 +245,7 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
                 .reference(UUID.randomUUID().toString())
                 .build();
 
-        final PaymentResponse<ResponseCardSource> payment = blocking(paymentsClient.requestPayment(request));
+        final PaymentResponse payment = blocking(paymentsClient.requestPayment(request));
 
         // capture
 
@@ -262,12 +260,12 @@ class GetPaymentsTestIT extends AbstractPaymentsTestIT {
         assertNotNull(paymentActions);
         assertEquals(2, paymentActions.size());
 
-        final PaymentAction authorizationPaymentAction = paymentActions.stream().filter(a -> PaymentActionType.AUTHORIZATION.equals(a.getType())).findFirst().get();
+        final PaymentAction authorizationPaymentAction = paymentActions.stream().filter(a -> ActionType.AUTHORIZATION.equals(a.getType())).findFirst().get();
         assertNotNull(authorizationPaymentAction);
         assertEquals(payment.getActionId(), authorizationPaymentAction.getId());
         assertEquals("1234", authorizationPaymentAction.getMetadata().get("test"));
 
-        final PaymentAction capturePaymentAction = paymentActions.stream().filter(a -> PaymentActionType.CAPTURE.equals(a.getType())).findFirst().get();
+        final PaymentAction capturePaymentAction = paymentActions.stream().filter(a -> ActionType.CAPTURE.equals(a.getType())).findFirst().get();
         assertNotNull(capturePaymentAction);
         assertEquals(captureResponse.getActionId(), capturePaymentAction.getId());
         assertEquals(captureResponse.getReference(), capturePaymentAction.getReference());

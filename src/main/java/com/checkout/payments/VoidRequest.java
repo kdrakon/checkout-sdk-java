@@ -11,10 +11,10 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VoidRequest {
+public final class VoidRequest {
 
     private String reference;
 
     private Map<String, Object> metadata;
-    
+
 }

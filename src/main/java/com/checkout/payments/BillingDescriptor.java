@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BillingDescriptor {
+
     private String name;
+
     private String city;
+
 }
